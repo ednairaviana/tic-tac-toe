@@ -1,17 +1,20 @@
 const boardGame = document.querySelector(".board-game");
 const banner = document.querySelector(".main-banner");
 const gridItem = document.querySelectorAll(`.board-game .grid-item`);
-const gameBoard = [];
 
+const gameBoard = [];
 let symbol = "X";
+displayTurn(symbol);
+
 gridItem.forEach(function (element, index) {
     
     element.addEventListener("click", () => {  
         if(element.childNodes.length == 0) {
             gameBoard[index] = symbol;
             renderSign(element);
-            setTimeout(checkVictory, 1000)
-            setTimeout(checkBoard, 1000)
+            displayTurn(symbol);
+            setTimeout(checkVictory, 500);
+            setTimeout(checkBoard, 500);
         }
     });
 });
@@ -30,14 +33,16 @@ function checkVictory() {
         setField(2, 5, 8),
         setField(0, 4, 8),
         setField(2, 4, 6),
-    ]
+    ];
 
     victoryProb.forEach(function (probs) {
         if (probs.every(field => field == "X")) {
             adviceWin("X");
+            displayTurn();
             clearBoard();
         } else if (probs.every(field => field == "O")) {
             adviceWin("O");
+            displayTurn()
             clearBoard();
         }
     })
@@ -46,6 +51,7 @@ function checkVictory() {
 function checkBoard() {
     if(gameBoard.length == 9 && gameBoard.includes(undefined) == false) {
         adviceWin();
+        displayTurn();
         clearBoard();
     }
 }
@@ -53,7 +59,7 @@ function checkBoard() {
 function clearBoard() {
     gridItem.forEach(function (element) {
         element.innerText = "";
-    })
+    });
     gameBoard.length = 0;
 
     const resetBtn = document.querySelector(".reset-btn");
@@ -61,7 +67,8 @@ function clearBoard() {
         banner.style.display = "none";
         boardGame.style.display = "grid";
         symbol = "X";
-    })
+        displayTurn(symbol);
+    });
 }
 
 function renderSign(parent) {
@@ -88,16 +95,32 @@ function adviceWin(winner) {
     banner.style.display = "flex";
 
     if (winner == "X") {
-        displayWin("block", "none", "none");
+        displayWin("flex", "none", "none");
     } else if (winner == "O") {
-        displayWin("none", "block", "none");
+        displayWin("none", "flex", "none");
     } else {
-        displayWin("none", "none", "block");
+        displayWin("none", "none", "flex");
     }
 
     function displayWin(x, o, dr) {
         winX.style.display = x;
         winO.style.display = o;
         draw.style.display = dr;
+    }
+}
+
+function displayTurn(turn) {
+    const turnX = document.querySelector("#x-turn");
+    const turnO = document.querySelector("#o-turn");
+
+    if(turn == "X") {
+        turnX.style.display = "block";
+        turnO.style.display = "none";
+    } else if (turn == "O") {
+        turnX.style.display = "none";
+        turnO.style.display = "block";
+    } else {
+        turnX.style.display = "none";
+        turnO.style.display = "none";
     }
 }
