@@ -5,11 +5,11 @@ let symbol = "X";
 gridItem.forEach(function (element, index) {
     
     element.addEventListener("click", () => {  
-        if(element.innerText == "") {
-            renderSign(element);
+        if(element.childNodes.length == 0) {
             gameBoard[index] = symbol;
-            checkVictory();
-            checkBoard();
+            renderSign(element);
+            setTimeout(checkVictory, 1000)
+            setTimeout(checkBoard, 1000)
         }
     });
 });
@@ -32,8 +32,10 @@ function checkVictory() {
 
     victoryProb.forEach(function (probs) {
         if (probs.every(field => field == "X")) {
+            adviceWin("X WIN!");
             clearBoard();
         } else if (probs.every(field => field == "O")) {
+            adviceWin("O WIN!");
             clearBoard();
         }
     })
@@ -41,6 +43,7 @@ function checkVictory() {
 
 function checkBoard() {
     if(gameBoard.length == 9 && gameBoard.includes(undefined) == false) {
+        adviceWin("DRAW!");
         clearBoard();
     }
 }
@@ -65,4 +68,12 @@ function renderSign(parent) {
     }
 
     parent.appendChild(sign);
+}
+
+function adviceWin(text) {
+    const banner = document.querySelector(".main-banner");
+    const winPara = document.querySelector(".advice-winner");
+
+    banner.style.display = "flex";
+    winPara.innerText = text;
 }
