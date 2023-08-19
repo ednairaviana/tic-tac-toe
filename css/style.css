@@ -62,7 +62,7 @@ body {
 /* MAIN-BANNER */
 
 .main-banner {
-    position: absolute;
+    letter-spacing: 5px;
 
     display: none;
     align-items: center;
@@ -72,7 +72,19 @@ body {
 }
 
 .advice-winner {
-    font-size: 70px;
+    font-size: 80px;
+    font-weight: 700;
+
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.ftLnGr {
+    background: -webkit-linear-gradient(left, rgb(0, 17, 255), red);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .reset-btn {

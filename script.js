@@ -1,3 +1,5 @@
+const boardGame = document.querySelector(".board-game");
+const banner = document.querySelector(".main-banner");
 const gridItem = document.querySelectorAll(`.board-game .grid-item`);
 const gameBoard = [];
 
@@ -32,10 +34,10 @@ function checkVictory() {
 
     victoryProb.forEach(function (probs) {
         if (probs.every(field => field == "X")) {
-            adviceWin("X WIN!");
+            adviceWin("X");
             clearBoard();
         } else if (probs.every(field => field == "O")) {
-            adviceWin("O WIN!");
+            adviceWin("O");
             clearBoard();
         }
     })
@@ -43,7 +45,7 @@ function checkVictory() {
 
 function checkBoard() {
     if(gameBoard.length == 9 && gameBoard.includes(undefined) == false) {
-        adviceWin("DRAW!");
+        adviceWin();
         clearBoard();
     }
 }
@@ -53,6 +55,13 @@ function clearBoard() {
         element.innerText = "";
     })
     gameBoard.length = 0;
+
+    const resetBtn = document.querySelector(".reset-btn");
+    resetBtn.addEventListener("click", () => {
+        banner.style.display = "none";
+        boardGame.style.display = "grid";
+        symbol = "X";
+    })
 }
 
 function renderSign(parent) {
@@ -70,10 +79,25 @@ function renderSign(parent) {
     parent.appendChild(sign);
 }
 
-function adviceWin(text) {
-    const banner = document.querySelector(".main-banner");
-    const winPara = document.querySelector(".advice-winner");
+function adviceWin(winner) {
+    const winX = document.querySelector("#x-win");
+    const winO = document.querySelector("#o-win");
+    const draw = document.querySelector("#draw");
 
+    boardGame.style.display = "none";
     banner.style.display = "flex";
-    winPara.innerText = text;
+
+    if (winner == "X") {
+        displayWin("block", "none", "none");
+    } else if (winner == "O") {
+        displayWin("none", "block", "none");
+    } else {
+        displayWin("none", "none", "block");
+    }
+
+    function displayWin(x, o, dr) {
+        winX.style.display = x;
+        winO.style.display = o;
+        draw.style.display = dr;
+    }
 }
